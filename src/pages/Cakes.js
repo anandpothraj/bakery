@@ -1,25 +1,39 @@
-import React from 'react';
-import { Container , Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { buyCake } from '../redux/cake/cakeActions';
+import SingleProduct from '../components/SingleContainer';
+import '../components/style.css';
+import { fetchCakes } from '../redux/cake/cakeActions';
+import { fetchProducts } from '../redux/product/productActions';
 
 const Cakes = () => {
 
+  const userLoggedIn = useSelector( state => state.user.loggedIn);
+  const cakeData = useSelector( state => state.cake.cakeData);
+  const loading = useSelector( state => state.cake.loading);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const numOfCakes = useSelector(state => state.cake.numOfCakes);
+
+  useEffect(() => {
+    dispatch(fetchCakes());
+    if(userLoggedIn === false){
+      navigate("/");
+    }
+    dispatch(fetchProducts());
+  },[userLoggedIn,navigate,cakeData,dispatch])
 
   return (
-    <div>
-      <Container>
-        <h1>No of Cakes in Store : {numOfCakes}</h1>
-        {
-          numOfCakes === 0 ?
-            <Button onClick={()=>{dispatch(buyCake(1))}} disabled>Buy Cakes</Button>
-          :
-            <Button onClick={()=>{dispatch(buyCake(1))}}>Buy Cakes</Button>
-        }
-      </Container>
-    </div>
+    <>
+      <div className="home">
+        <div className="productContainer">
+          {
+            !loading && cakeData && cakeData.map((prod) => (
+              <SingleProduct prod={prod} key={prod.id}/>
+            ))
+          }
+        </div>
+      </div>
+    </>
   )
 }
 

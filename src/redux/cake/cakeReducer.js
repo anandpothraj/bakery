@@ -1,16 +1,26 @@
-const { BUY_CAKE } = require('./cakeTypes');
+import { FETCH_CAKES_REQUEST , FETCH_CAKES_SUCCESS, FETCH_CAKES_FAILURE } from './cakeConstants';
 
 const initialState = {
-    numOfCakes : 10
+    cakeData : [],
+    loading : true,
+    error : '',
 }
 
 const cakeReducer = ( state = initialState , action ) => {
     switch(action.type){
-        case BUY_CAKE : return {
-            ...state,
-            numOfCakes : state.numOfCakes - action.payload
+        case  FETCH_CAKES_REQUEST: return {
+            loading: true,
         }
-        default : return  state 
+        case FETCH_CAKES_SUCCESS : return {
+            loading : false,
+            cakeData : action.payload
+        }
+        case FETCH_CAKES_FAILURE : return {
+            loading : false,
+            error : action.payload
+        }
+        
+        default : return state;
     }
 }
 

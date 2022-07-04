@@ -5,8 +5,10 @@ import store from './redux/store';
 import Home from './pages/Home';
 import Cakes from './pages/Cakes';
 import Icecreams from './pages/Icecreams';
+import Cart from './pages/Cart';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import Congrats from './pages/Congrats';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
@@ -18,8 +20,9 @@ const App = () => {
           <Route path='/' element={<Home/>} exact/>
           <Route path='/cakes' element={<Cakes/>} exact/>
           <Route path='/icecreams' element={<Icecreams/>} exact/>
+          <Route path='/cart' element={<Cart/>} exact/>
+          <Route path='/congrats' element={<Congrats/>} exact/>
         </Routes>
-        <Footer/>
       </Router>
      </Provider>
   )

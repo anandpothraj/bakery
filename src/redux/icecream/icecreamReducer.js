@@ -1,16 +1,26 @@
-const { BUY_ICECREAM } = require('./icecreamTypes');
+import { FETCH_ICECREAMS_REQUEST , FETCH_ICECREAMS_SUCCESS, FETCH_ICECREAMS_FAILURE} from './icecreamConstants';
 
 const initialState = {
-    numOfIcecream : 20 
+    icecreamData : [],
+    loading : true,
+    error : '',
 }
 
 const icecreamReducer = ( state = initialState , action ) => {
     switch(action.type){
-        case BUY_ICECREAM : return {
-            ...state,
-            numOfIcecream : state.numOfIcecream - action.payload
+        case  FETCH_ICECREAMS_REQUEST: return {
+            loading: true,
         }
-        default : return  state 
+        case FETCH_ICECREAMS_SUCCESS : return {
+            loading : false,
+            icecreamData : action.payload
+        }
+        case FETCH_ICECREAMS_FAILURE : return {
+            loading : false,
+            error : action.payload
+        }
+        
+        default : return state;
     }
 }
 

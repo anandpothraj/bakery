@@ -1,9 +1,17 @@
 import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE, USER_LOGOUT_REQUEST, USER_LOGOUT_SUCCESS, USER_LOGOUT_FAILURE } from './userConstant';
 
+let status = localStorage.getItem("loggedIn");
+let loggedIn;
+if(status === null){
+    loggedIn = false
+}
+else{
+    loggedIn = JSON.parse(status);
+}
 
 const initialState = {
     loading : false,
-    loggedIn : false,
+    loggedIn : loggedIn,
     error : '',
 }
 

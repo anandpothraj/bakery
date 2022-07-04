@@ -1,25 +1,39 @@
-import React from 'react';
-import { Container , Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { buyIcecream } from '../redux/icecream/icecreamActions';
+import SingleProduct from '../components/SingleContainer';
+import '../components/style.css';
+import { fetchIcecreams } from '../redux/icecream/icecreamActions';
+import { fetchProducts } from '../redux/product/productActions';
 
 const Icecreams = () => {
 
+  const userLoggedIn = useSelector( state => state.user.loggedIn);
+  const icecreamData = useSelector( state => state.icecream.icecreamData);
+  const loading = useSelector( state => state.icecream.loading);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const numOfIcecream = useSelector(state => state.icecream.numOfIcecream);
+
+  useEffect(() => {
+    dispatch(fetchIcecreams());
+    if(userLoggedIn === false){
+      navigate("/");
+    }
+    dispatch(fetchProducts());
+  },[userLoggedIn,navigate,icecreamData,dispatch])
 
   return (
-    <div>
-      <Container>
-        <h1>No of icecream in Store : {numOfIcecream}</h1>
-        {
-          numOfIcecream === 0 ?
-            <Button onClick={()=>{dispatch(buyIcecream(1))}} disabled>Buy Icecreams</Button>
-          :
-            <Button onClick={()=>{dispatch(buyIcecream(1))}}>Buy Icecreams</Button>
-        }
-      </Container>
-    </div>
+    <>
+      <div className="home">
+        <div className="productContainer">
+          {
+            !loading && icecreamData && icecreamData.map((prod) => (
+              <SingleProduct prod={prod} key={prod.id}/>
+            ))
+          }
+        </div>
+      </div>
+    </>
   )
 }
 

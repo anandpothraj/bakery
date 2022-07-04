@@ -1,22 +1,32 @@
+import "./style.css";
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
-import { Nav, Navbar, Container, Button } from 'react-bootstrap';
-import { useSelector, useDispatch  } from 'react-redux/es/exports';
+import { AiFillDelete } from "react-icons/ai";
+import { FaShoppingCart } from "react-icons/fa";
 import { LogoutUser } from '../redux/user/userActions';
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch  } from 'react-redux/es/exports';
+import { removeFromCart } from '../redux/cart/cartActions';
+import { Nav, Navbar, Container, Button, Dropdown, Badge } from 'react-bootstrap';
 
 const Header = () => {
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userLoggedIn = useSelector( state => state.user.loggedIn);
+  const cart = useSelector( state => state.cart.cart);
 
   useEffect(() => { },[userLoggedIn])
+
+  const goToCart = () => {
+    navigate('/cart')
+  }
 
   return (
     <>
         <Navbar bg="dark" expand="lg" >
             <Container>
                 <Navbar.Brand className="text-light">
-                  <Link className="text-light nav-link" to='/'>HomAnand - bakery and icecreams</Link>
+                  <Link className="text-light nav-link" to='/'>E-shop</Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
@@ -35,9 +45,53 @@ const Header = () => {
                     
                   }
                 </Nav>
+
                 {
                   userLoggedIn ?
-                  <Button onClick={()=>{dispatch(LogoutUser())}}>Logout</Button>
+                  <>
+                    <Dropdown>
+                      <Dropdown.Toggle variant="success" className='m-2' id="dropdown-autoclose-true">
+                        <FaShoppingCart color="white" fontSize="25px" />
+                        <Badge bg="success" >{cart.length}</Badge>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ minWidth: 370 }}>
+                      {
+                        cart.length > 0 ? 
+                          (
+                            <>
+                              {cart.map((item) => (
+                                  <span className="cartitem" key={item.id} >
+                                  <img
+                                    src={item.img}
+                                    className="cartItemImg"
+                                    alt={item.name}
+                                  />
+                                  <div className="cartItemDetail">
+                                    <span>{item.name}</span>
+                                    <span>₹ {item.price}.</span>
+                                  </div>
+                                  <AiFillDelete
+                                    fontSize="20px"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => dispatch(removeFromCart(item))}
+                                  />
+                                </span>
+                              ))}
+                              <Dropdown.Item>
+                                <Button style={{ width: "95%", margin: "0 10px" }} onClick={goToCart}>
+                                  Go To Cart
+                                </Button>
+                              </Dropdown.Item>
+                            </>
+                          ) 
+                          : 
+                          (
+                            <span style={{ padding: 10 }}>Cart is Empty!</span>
+                          )}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button onClick={()=>{localStorage.removeItem("email");localStorage.setItem("loggedIn",false);dispatch(LogoutUser())}}>Logout</Button>
+                  </>
                   :
                   <Button>Sign Up</Button>
                 }
