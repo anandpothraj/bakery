@@ -32,8 +32,8 @@ const Profile = () => {
                 <Card.Img variant="top" src={profilePic} style={imgCss}/>
                 <Card.Body>
                     <Card.Title className='text-center'>{name}</Card.Title>
-                    <Card.Text>
-                        <p className='text-center'>Email : {email}</p>
+                    <Card.Text className='text-center'>
+                        Email : {email}
                     </Card.Text>
                 </Card.Body>
             </Card>

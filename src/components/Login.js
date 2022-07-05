@@ -18,16 +18,17 @@ const Login = () => {
 
     const handleSubmit = (email,password) => {
         if( name && email  && password && pic){
-            console.log(pic)
             localStorage.setItem("loggedIn", true);
             localStorage.setItem("email",email);
             localStorage.setItem("name",name);
             dispatch(LoginUser());
         }
+        else{
+            toast.error("Please Fill all fields")
+        }
     }
 
     const postDetails = (pics) => {
-        console.log(pics.type);
         if (pics.type === "image/jpeg" || pics.type === "image/png") {
           const data = new FormData();
           data.append('file' , pics);
