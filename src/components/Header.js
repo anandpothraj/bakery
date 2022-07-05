@@ -15,6 +15,15 @@ const Header = () => {
   const userLoggedIn = useSelector( state => state.user.loggedIn);
   const cart = useSelector( state => state.cart.cart);
 
+
+  const logOut = () => {
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("img");
+    localStorage.setItem("loggedIn",false);
+    dispatch(LogoutUser())
+  }
+
   useEffect(() => { },[userLoggedIn])
 
   const goToCart = () => {
@@ -37,6 +46,7 @@ const Header = () => {
                       <Link className="text-light nav-link" to='/'>Home</Link>
                       <Link className="text-light nav-link" to="/cakes ">Cake</Link>
                       <Link className="text-light nav-link" to="/icecreams" >Icecream</Link>
+                      <Link className="text-light nav-link" to="/profile" >Profile</Link>
                     </>
                     : 
                     <>
@@ -90,7 +100,7 @@ const Header = () => {
                           )}
                       </Dropdown.Menu>
                     </Dropdown>
-                    <Button onClick={()=>{localStorage.removeItem("email");localStorage.setItem("loggedIn",false);dispatch(LogoutUser())}}>Logout</Button>
+                    <Button onClick={logOut}>Logout</Button>
                   </>
                   :
                   <Button>Sign Up</Button>

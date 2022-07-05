@@ -8,6 +8,7 @@ import Icecreams from './pages/Icecreams';
 import Cart from './pages/Cart';
 import Header from './components/Header';
 import Congrats from './pages/Congrats';
+import Profile from './pages/Profile';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/cakes' element={<Cakes/>} exact/>
           <Route path='/icecreams' element={<Icecreams/>} exact/>
           <Route path='/cart' element={<Cart/>} exact/>
+          <Route path='/profile' element={<Profile/>} exact/>
           <Route path='/congrats' element={<Congrats/>} exact/>
         </Routes>
       </Router>
